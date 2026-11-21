@@ -1,0 +1,10 @@
+# compiled files (Java rebuilds them automatically)
+bin/
+*.class
+
+# local data: test products, the generated database, exported reports
+data/
+
+# system files
+.DS_Store
+Thumbs.db
