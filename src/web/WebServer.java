@@ -36,6 +36,7 @@ public class WebServer {
         server.createContext("/", this::serveStatic);       // every address that nothing else claims
         server.createContext("/api/ping", this::ping);      // the longest matching address wins
         new Api(app).register(server);                      // the real endpoints
+        new ProductApi(app).register(server);               // the endpoints that change products
 
         pool = Executors.newFixedThreadPool(8);             // up to 8 requests handled at the same time
         server.setExecutor(pool);
