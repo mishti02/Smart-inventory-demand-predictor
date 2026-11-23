@@ -1,0 +1,92 @@
+/* ===== Products page, pop-up forms and messages ===== */
+
+a.btn { text-decoration: none; }
+.btn-danger { background: var(--critical); color: #fff; }
+.btn:disabled { opacity: .6; cursor: default; }
+
+/* ---------- top row of cards ---------- */
+.prod-top { display: grid; grid-template-columns: minmax(280px, 1fr) minmax(280px, 1fr) minmax(320px, 1.25fr); gap: 18px; margin-bottom: 18px; }
+@media (max-width: 1250px) { .prod-top { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 820px)  { .prod-top { grid-template-columns: 1fr; } }
+
+.radar, .linechart { display: block; width: 100%; height: auto; }
+.radar { max-height: 270px; }
+.radar text, .linechart text { font-family: inherit; }
+
+.due { font-weight: 700; }
+.due.critical { color: var(--critical); }
+.due.warning  { color: #b57800; }
+.due.safe     { color: var(--safe); }
+
+.bar-list { padding-top: 6px; }
+.bar-row { display: grid; grid-template-columns: 92px 1fr auto; gap: 10px; align-items: center; margin: 14px 0; font-size: 14px; }
+.bar-track { height: 10px; border-radius: 99px; background: rgba(15, 61, 58, .08); }
+.bar-track i { display: block; height: 100%; border-radius: 99px; background: var(--mint); }
+
+/* ---------- toolbar above the table ---------- */
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 6px 0 10px; }
+.toolbar .select { margin-left: auto; }
+
+.input, .select {
+  padding: 10px 16px; border: 1px solid var(--line); border-radius: 999px;
+  background: var(--glass-strong); color: var(--ink);
+  font: inherit; font-size: 14px; outline: none;
+}
+.input:focus, .select:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(15, 61, 58, .12); }
+.toolbar .input { min-width: 240px; }
+
+.fchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.fchip {
+  padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px;
+  background: var(--glass-strong); cursor: pointer; font-size: 13px; font-weight: 600;
+}
+.fchip small { margin-left: 6px; opacity: .65; font-weight: 600; }
+.fchip.active { border-color: var(--brand); background: var(--brand); color: #fff; }
+
+.table-wrap { overflow-x: auto; }
+.table td.empty { padding: 36px 10px; text-align: center; color: var(--muted); }
+
+.row-actions { display: flex; justify-content: flex-end; gap: 6px; }
+.icon-btn {
+  display: grid; place-items: center; width: 34px; height: 34px; padding: 0; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 50%; background: #fff; color: var(--ink);
+}
+.icon-btn:hover { background: var(--brand); color: #fff; }
+.icon-btn.danger:hover { background: var(--critical); border-color: var(--critical); }
+
+/* ---------- pop-up forms ---------- */
+.overlay {
+  position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 20px;
+  background: rgba(15, 47, 44, .38); backdrop-filter: blur(3px);
+}
+.modal {
+  width: min(460px, 100%); padding: 26px 28px;
+  border-radius: 28px; background: #fff; box-shadow: 0 24px 70px rgba(15, 47, 44, .3);
+}
+.modal h3 { margin: 0 0 14px; font-size: 20px; }
+.modal-note { margin: 0 0 14px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+
+.field { display: block; margin-bottom: 14px; }
+.field span { display: block; margin-bottom: 6px; color: var(--muted); font-size: 13px; font-weight: 600; }
+.field input {
+  width: 100%; padding: 11px 16px; border: 1px solid var(--line); border-radius: 16px;
+  background: #fff; color: var(--ink); font: inherit; font-size: 15px; outline: none;
+}
+.field input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(15, 61, 58, .12); }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.form-error {
+  margin: 0 0 12px; padding: 10px 14px; border-radius: 14px;
+  background: rgba(224, 74, 74, .12); color: #b32d2d; font-size: 14px;
+}
+.form-error[hidden] { display: none; }
+
+/* ---------- small messages in the corner ---------- */
+#toasts { position: fixed; right: 28px; bottom: 28px; z-index: 60; display: flex; flex-direction: column; gap: 10px; }
+.toast {
+  padding: 12px 20px; border-radius: 16px; background: var(--brand); color: #fff; font-size: 14px;
+  box-shadow: var(--shadow); opacity: 0; transform: translateY(10px); transition: opacity .25s, transform .25s;
+}
+.toast.show { opacity: 1; transform: none; }
+.toast.error { background: var(--critical); }

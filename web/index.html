@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Inventory</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/products.css">
+  <link rel="stylesheet" href="css/sales.css">
+</head>
+<body>
+  <div class="frame">
+
+    <aside class="sidebar">
+      <a class="brand" href="#/dashboard">
+        <span class="brand-logo" id="brandLogo"></span>
+        <span class="brand-name">Smart Inventory</span>
+      </a>
+      <nav id="nav"></nav>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <label class="search">
+          <span class="ico" data-icon="search"></span>
+          <input id="globalSearch" type="search" placeholder="Search products..." autocomplete="off">
+        </label>
+
+        <div class="top-right">
+          <button class="round-btn" id="bellBtn" title="Critical products">
+            <span class="ico" data-icon="bell"></span>
+            <span class="badge" id="bellBadge" hidden>0</span>
+          </button>
+          <div class="user">
+            <span class="avatar">SO</span>
+            <span class="user-text">
+              <strong>Shop Owner</strong>
+              <small id="userStorage">connecting...</small>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <section class="page-head">
+        <div>
+          <h1 id="pageTitle">Dashboard</h1>
+          <p id="pageSub"></p>
+        </div>
+        <div class="page-actions" id="pageActions"></div>
+      </section>
+
+      <main class="view" id="view"></main>
+    </div>
+
+  </div>
+
+  <!-- the order matters: helpers first, then the app, then the pages (they register themselves in app.js) -->
+  <script src="js/icons.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/extras.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/pages/dashboard.js"></script>
+  <script src="js/pages/products.js"></script>
+  <script src="js/pages/sales.js"></script>
+</body>
+</html>
