@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Inventory</title>
+  <style>
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      font-family: "Segoe UI", system-ui, sans-serif; color: #0f2f2c;
+      background: linear-gradient(135deg, #dff3ee, #f7fcfb 60%, #e4f1f7);
+    }
+    .card {
+      background: rgba(255, 255, 255, .7); backdrop-filter: blur(14px);
+      border-radius: 28px; padding: 36px 44px; max-width: 520px;
+      box-shadow: 0 10px 40px rgba(15, 60, 55, .12);
+    }
+    h1 { margin: 0 0 8px; }
+    .pill { display: inline-block; padding: 6px 14px; border-radius: 999px;
+            background: #0f3d3a; color: #fff; font-size: 14px; }
+    pre { background: #eef6f4; padding: 14px; border-radius: 16px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Smart Inventory</h1>
+    <p>This page was sent by the Java server.</p>
+    <p><span class="pill" id="status">checking the server...</span></p>
+    <pre id="out">...</pre>
+  </div>
+
+  <script>
+    fetch('/api/ping')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('status').textContent = 'API is working';
+        document.getElementById('out').textContent = JSON.stringify(data, null, 2);
+      })
+      .catch(error => {
+        document.getElementById('status').textContent = 'API not reachable';
+        document.getElementById('out').textContent = String(error);
+      });
+  </script>
+</body>
+</html>
