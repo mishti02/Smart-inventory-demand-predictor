@@ -5,16 +5,20 @@ import service.JdbcRepository;
 import web.AppContext;
 import web.WebServer;
 
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import java.awt.Desktop;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.URI;
 import java.nio.file.Paths;
 
 public class WebLauncher {
     private static final int PORT = 8080;
     private static final long AUTO_SAVE_MILLIS = 10_000;
+    private static final String ADDRESS = "http://localhost:" + PORT;
 
     public static void main(String[] args) throws Exception {
         try {
@@ -23,14 +27,20 @@ public class WebLauncher {
             // the default look is fine too
         }
 
+        // 0. is the program (or something else) already using the port?
+        if (!portFree(PORT)) {
+            ask("Port " + PORT + " is already in use.\n"
+                            + "Smart Inventory is probably already running, so it will be opened in your browser.\n"
+                            + "(If another program uses the port, change PORT in WebLauncher.)",
+                    "Already running", "OK");
+            openBrowser();
+            System.exit(0);
+        }
+
         // 1. where should the data live?
-        String[] options = {"SQLite database", "CSV files"};
-        int choice = JOptionPane.showOptionDialog(null,
-                "Where should the inventory be stored?",
-                "Smart Inventory - storage",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
-                null, options, options[0]);
-        if (choice == JOptionPane.CLOSED_OPTION) {
+        int choice = ask("Where should the inventory be stored?",
+                "Smart Inventory - storage", "SQLite database", "CSV files");
+        if (choice < 0) {
             System.exit(0);   // the dialog was closed, so just quit
         }
 
@@ -44,18 +54,18 @@ public class WebLauncher {
         try {
             loaded = app.load();
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Could not load saved data:\n" + e.getMessage(),
-                    "Load error", JOptionPane.ERROR_MESSAGE);
+            ask("Could not load saved data:\n" + e.getMessage(), "Load error", "OK");
+            System.exit(1);
             return;
         }
         if (loaded == 0 && importSource != null) {
             int found = app.countIn(importSource);
             if (found > 0) {
-                int answer = JOptionPane.showConfirmDialog(null,
-                        "The " + store.getName() + " is empty, but " + found + " products were found in the "
-                                + importSource.getName() + ".\nImport them now?",
-                        "Import existing data", JOptionPane.YES_NO_OPTION);
-                if (answer == JOptionPane.YES_OPTION) {
+                int answer = ask("The " + store.getName() + " is empty, but " + found
+                                + " products were found in the " + importSource.getName()
+                                + ".\nImport them now?",
+                        "Import existing data", "Yes, import", "No, start empty");
+                if (answer == 0) {
                     app.importFrom(importSource);
                 }
             }
@@ -66,8 +76,7 @@ public class WebLauncher {
         WebServer server = new WebServer(PORT, Paths.get("web"), app);
         server.start();
 
-        String address = "http://localhost:" + PORT;
-        System.out.println("Smart Inventory web app is running at " + address);
+        System.out.println("Smart Inventory web app is running at " + ADDRESS);
         System.out.println("Storage: " + store.getName());
         System.out.println("Stop it with Ctrl+C in the terminal (this saves the data first).");
 
@@ -78,8 +87,42 @@ public class WebLauncher {
         }, "web-shutdown"));
 
         // 4. open the browser
-        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-            Desktop.getDesktop().browse(new URI(address));
+        openBrowser();
+    }
+
+    // Shows a question with buttons that ALWAYS appears on top. Returns the index of the
+    // chosen button, or -1 if the dialog was closed without choosing.
+    private static int ask(String message, String title, String... options) {
+        JOptionPane pane = new JOptionPane(message, JOptionPane.QUESTION_MESSAGE,
+                JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+        JDialog dialog = pane.createDialog(null, title);
+        dialog.setAlwaysOnTop(true);   // never hide behind VS Code
+        dialog.setVisible(true);       // waits here until the user answers
+        dialog.dispose();
+
+        Object value = pane.getValue();
+        for (int i = 0; i < options.length; i++) {
+            if (options[i].equals(value)) return i;
+        }
+        return -1;
+    }
+
+    // Tries to open the port: if that works, nobody else is using it
+    private static boolean portFree(int port) {
+        try (ServerSocket socket = new ServerSocket(port, 1, InetAddress.getByName("localhost"))) {
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    private static void openBrowser() {
+        try {
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                Desktop.getDesktop().browse(new URI(ADDRESS));
+            }
+        } catch (Exception e) {
+            System.out.println("Could not open the browser. Open " + ADDRESS + " yourself.");
         }
     }
 }
