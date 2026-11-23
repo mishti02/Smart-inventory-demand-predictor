@@ -7,6 +7,7 @@ import service.DemandPredictor;
 import service.InventoryManager;
 import service.ReportService;
 import service.SalesAnalytics;
+import service.SalesSimulator;
 
 import java.io.IOException;
 
@@ -18,6 +19,9 @@ public class AppContext {
     public final DemandPredictor predictor;
     public final ReportService reports;
     public final SalesAnalytics analytics;
+
+    // the live simulation: the auto-save thread stores whatever it records
+    public final SalesSimulator simulator = new SalesSimulator(manager, () -> { });
 
     // volatile: the auto-save thread must always see the latest value
     private volatile boolean dataLoaded = true;
@@ -70,6 +74,7 @@ public class AppContext {
     }
 
     public void shutdown() {
+        simulator.stop();
         if (autoSaveThread != null) autoSaveThread.interrupt();
         saveQuietly();
     }
@@ -78,7 +83,6 @@ public class AppContext {
         return store.getName();
     }
 
-    // Used by the endpoints to describe a product without repeating the "General" rule
     public static String categoryOf(Product p) {
         String c = p.getCategory();
         return (c == null || c.isBlank()) ? "General" : c;
