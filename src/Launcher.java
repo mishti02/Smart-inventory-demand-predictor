@@ -1,5 +1,5 @@
-import com.formdev.flatlaf.FlatLightLaf;
 import gui.MainFrame;
+import gui.UiStyle;
 import service.DataStore;
 import service.Database;
 import service.FileHandler;
@@ -10,7 +10,7 @@ import javax.swing.SwingUtilities;
 
 public class Launcher {
     public static void main(String[] args) {
-        FlatLightLaf.setup();
+        UiStyle.install();   // FlatLaf plus the rounded, blue look
 
         SwingUtilities.invokeLater(() -> {
             String[] options = {"SQLite database", "CSV files"};
