@@ -1,0 +1,19 @@
+/* ===== Predictions page ===== */
+
+.pred-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 22px 36px; }
+.ctl { display: flex; flex-direction: column; gap: 8px; }
+.ctl-label { color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.num-input { width: 120px; }
+.pred-note { margin: 16px 0 0; font-size: 13px; }
+
+.pred-results { display: flex; flex-direction: column; gap: 18px; margin-top: 18px; }
+
+.table tr.row-critical td { background: rgba(224, 74, 74, .06); }
+.table tr.row-warning td { background: rgba(240, 163, 10, .07); }
+
+.rank-badge {
+  display: inline-grid; place-items: center; width: 28px; height: 28px;
+  border-radius: 50%; background: rgba(15, 61, 58, .08); font-size: 13px; font-weight: 700;
+}
+.sub-line { display: block; color: var(--muted); font-size: 12px; }
+.shelf-wide { width: 130px; min-width: 100px; }
