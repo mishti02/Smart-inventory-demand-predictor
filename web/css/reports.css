@@ -1,0 +1,7 @@
+/* ===== Reports page ===== */
+
+.rep-row { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr); gap: 18px; }
+@media (max-width: 1150px) { .rep-row { grid-template-columns: 1fr; } }
+
+.rank-name small { margin-left: 6px; font-weight: 500; }
+.rep-note { margin: 0 0 8px; font-size: 13px; }

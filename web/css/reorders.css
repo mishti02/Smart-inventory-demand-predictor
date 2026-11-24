@@ -1,0 +1,17 @@
+/* ===== Reorders page ===== */
+
+.stat-big.sm { font-size: 26px; padding-top: 6px; }
+
+.chk { width: 18px; height: 18px; accent-color: var(--brand); cursor: pointer; }
+.qty-badge { display: inline-block; padding: 4px 12px; border-radius: 999px; background: rgba(15, 61, 58, .09); font-weight: 700; }
+.order-by { font-size: 13.5px; font-weight: 600; white-space: nowrap; }
+.order-by.now { color: var(--critical); }
+.table tr.dim td { opacity: .45; }
+
+.re-bar {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+  margin-top: 14px; padding-top: 16px; border-top: 1px solid var(--line);
+}
+.re-bar .sel { color: var(--muted); font-size: 14px; }
+.re-bar .sel strong { color: var(--ink); }
+.re-actions { display: flex; flex-wrap: wrap; gap: 10px; }
