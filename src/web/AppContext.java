@@ -26,6 +26,7 @@ public class AppContext {
     // volatile: the auto-save thread must always see the latest value
     private volatile boolean dataLoaded = true;
     private Thread autoSaveThread;
+    private volatile long autoSaveMillis = 0;
 
     public AppContext(DataStore store) {
         this.store = store;
@@ -56,8 +57,13 @@ public class AppContext {
         store.save(manager);
     }
 
-    public void startAutoSave(long millis) {
+        public void startAutoSave(long millis) {
+        autoSaveMillis = millis;
         autoSaveThread = AutoSaver.start(this::saveQuietly, millis);
+    }
+
+    public long autoSaveMillis() {
+        return autoSaveMillis;
     }
 
     public void save() throws IOException {

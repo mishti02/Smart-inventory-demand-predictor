@@ -1,0 +1,22 @@
+/* ===== Settings page ===== */
+
+.set-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 18px; margin-bottom: 18px; }
+@media (max-width: 1150px) { .set-grid { grid-template-columns: 1fr; } }
+
+.set-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.set-hint { margin: 0 0 16px; font-size: 13px; }
+
+.kv { display: flex; flex-direction: column; }
+.kv-row { display: flex; justify-content: space-between; gap: 18px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.kv-row:last-child { border-bottom: 0; }
+.kv-row span:first-child { color: var(--muted); flex-shrink: 0; }
+.kv-row strong { text-align: right; word-break: break-all; font-weight: 600; }
+
+.tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 8px; }
+.tool {
+  display: flex; flex-direction: column; justify-content: space-between; gap: 14px;
+  padding: 18px 20px; border-radius: 24px; background: var(--c);
+}
+.tool h4 { margin: 0 0 6px; font-size: 16px; }
+.tool p { margin: 0; color: rgba(15, 47, 44, .75); font-size: 13px; line-height: 1.5; }
+.tool .btn { align-self: flex-start; }

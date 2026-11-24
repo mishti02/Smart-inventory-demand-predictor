@@ -244,8 +244,12 @@
     title: 'Reorders',
     sub: 'What to order, how much, and by when',
 
-    async render(v, params, ctx) {
+        async render(v, params, ctx) {
       view = v;
+      if (state.defaultsVersion !== UserDefaults.version) {
+        Object.assign(state, UserDefaults.get());
+        state.defaultsVersion = UserDefaults.version;
+      }
       ctx.actions.innerHTML = '<a class="btn btn-light" href="#/predictions">' + icon('trend', 16) + 'All predictions</a>';
 
       view.innerHTML =

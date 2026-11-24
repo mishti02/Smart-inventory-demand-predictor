@@ -146,8 +146,12 @@
     title: 'Predictions',
     sub: 'When will each product run out, and what should be ordered?',
 
-    async render(v, params, ctx) {
+        async render(v, params, ctx) {
       view = v;
+      if (state.defaultsVersion !== UserDefaults.version) {
+        Object.assign(state, UserDefaults.get());
+        state.defaultsVersion = UserDefaults.version;
+      }
       ctx.actions.innerHTML = '<a class="btn btn-dark" href="#/reorders">' + icon('truck', 16) + 'Reorder list</a>';
 
       view.innerHTML =
