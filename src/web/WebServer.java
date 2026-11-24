@@ -38,6 +38,7 @@ public class WebServer {
         new Api(app).register(server);                      // the real endpoints
         new ProductApi(app).register(server);               // the endpoints that change products
         new SalesApi(app).register(server);                 // sales summary, record a sale, simulation
+        new ReportApi(app).register(server);                // report data and the report download
 
         pool = Executors.newFixedThreadPool(8);             // up to 8 requests handled at the same time
         server.setExecutor(pool);
