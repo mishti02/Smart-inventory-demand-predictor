@@ -115,6 +115,7 @@ public class WebLauncher {
             return false;
         }
     }
+    
 
     private static void openBrowser() {
         try {

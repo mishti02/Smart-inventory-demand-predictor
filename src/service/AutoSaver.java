@@ -3,13 +3,15 @@ package service;
 import java.time.LocalTime;
 
 // A Runnable: the JOB that a background thread will perform
+// Implements Runnable means this class is a job that a thread can run. 
+// Runnable has one method, run(), and we must write it.
 public class AutoSaver implements Runnable {
     private final Runnable saveAction;
     private final long intervalMillis;
 
     public AutoSaver(Runnable saveAction, long intervalMillis) {
-        this.saveAction = saveAction;
-        this.intervalMillis = intervalMillis;
+        this.saveAction = saveAction; // The code that actually does the saving
+        this.intervalMillis = intervalMillis; 
     }
 
     @Override

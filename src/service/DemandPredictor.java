@@ -6,7 +6,7 @@ import model.UrgencyLevel;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Comparator; //to sort list
 import java.util.List;
 
 public class DemandPredictor {
