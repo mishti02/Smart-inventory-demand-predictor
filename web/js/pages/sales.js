@@ -1,80 +1,36 @@
-// ===== Sales page: record sales, totals, category split, daily bars, history, live simulation =====
+// ===== Sales page: record sales, totals, category split, daily bars and history =====
 (function () {
   const DONUT_COLORS = ['#9ad9cd', '#f2b3b3', '#d8eba6', '#bdbcf0', '#f6cba0', '#a9d4ee'];
   const CARD_COLORS = ['pink', 'mint', 'lime'];
   const BAR_COLORS = ['peach', 'lilac', 'mint', 'pink', 'sky', 'lime'];
 
-  const state = { days: 7, summary: null, sales: [], products: [], running: false };
+  const state = { days: 7, summary: null, sales: [], products: [] };
   let view = null;
-  let timer = null;
-  let lastKey = '';
-
-  function dataKey() {
-    return JSON.stringify([state.summary.total, state.summary.totalRecords, state.running]);
-  }
 
   async function load() {
-    const [summary, sales, products, sim] = await Promise.all([
+    const [summary, sales, products] = await Promise.all([
       api('/api/sales/summary?days=' + state.days),
       api('/api/sales?limit=100'),
-      api('/api/products'),
-      api('/api/simulation')
+      api('/api/products')
     ]);
     state.summary = summary;
     state.sales = sales.items;
     state.products = products.items;
-    state.running = sim.running;
   }
 
   async function refresh() {
     await load();
     if (parseHash().id !== 'sales') return;
-    lastKey = dataKey();
-    drawActions();
     drawAll();
     refreshStatus();
   }
 
-  // while the simulation runs, the page reloads its numbers every 3 seconds
-  async function poll() {
-    if (parseHash().id !== 'sales') { clearInterval(timer); timer = null; return; }
-    if (!state.running) return;
-    try {
-      const wasRunning = state.running;
-      await load();
-      if (parseHash().id !== 'sales') return;
-      if (wasRunning !== state.running) drawActions();
-      const key = dataKey();
-      if (key !== lastKey) {
-        lastKey = key;
-        drawAll();
-        refreshStatus();
-      }
-    } catch (e) { /* ignore one failed refresh, try again next time */ }
-  }
-
-  // ---------- buttons at the top right ----------
+  // ---------- button at the top right ----------
 
   function drawActions() {
     const box = document.getElementById('pageActions');
-    box.innerHTML =
-      '<button class="btn ' + (state.running ? 'btn-danger' : 'btn-light') + '" id="simBtn">' +
-        (state.running ? '<span class="live-dot"></span>Stop simulation' : icon('play', 16) + 'Live simulation') +
-      '</button>' +
-      '<button class="btn btn-dark" id="recordBtn">' + icon('plus', 16) + 'Record Sale</button>';
-    document.getElementById('simBtn').addEventListener('click', toggleSimulation);
+    box.innerHTML = '<button class="btn btn-dark" id="recordBtn">' + icon('plus', 16) + 'Record Sale</button>';
     document.getElementById('recordBtn').addEventListener('click', openRecord);
-  }
-
-  async function toggleSimulation() {
-    try {
-      const result = await apiPost(state.running ? '/api/simulation/stop' : '/api/simulation/start', {});
-      state.running = result.running;
-      drawActions();
-      UI.toast(state.running ? 'Live simulation started' : 'Live simulation stopped');
-    } catch (error) {
-      UI.toast(error.message, true);
-    }
   }
 
   // ---------- record a sale ----------
@@ -215,11 +171,8 @@
       view = v;
       await load();
       if (parseHash().id !== 'sales') return;
-      lastKey = dataKey();
       drawActions();
       drawAll();
-      if (timer) clearInterval(timer);
-      timer = setInterval(poll, 3000);
     }
   };
 })();

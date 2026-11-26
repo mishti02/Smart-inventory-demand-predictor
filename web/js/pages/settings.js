@@ -119,7 +119,6 @@ const UserDefaults = {
       ['Products', info.products],
       ['Sales records', info.salesRecords],
       ['Auto-save', 'every ' + info.autoSaveSeconds + ' seconds'],
-      ['Live simulation', info.simulationRunning ? 'running' : 'stopped'],
       ['Status levels', 'Critical: 3 days or less, Warning: 7 days or less, otherwise Safe'],
       ['Java version', info.javaVersion]
     ];

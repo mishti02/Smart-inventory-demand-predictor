@@ -93,7 +93,6 @@ public class SettingsApi {
         m.put("address", ex.getRequestHeaders().getFirst("Host"));
         m.put("products", app.manager.getAllProducts().size());
         m.put("salesRecords", app.analytics.countSales());
-        m.put("simulationRunning", app.simulator.isRunning());
         m.put("autoSaveSeconds", app.autoSaveMillis() / 1000);
         m.put("javaVersion", System.getProperty("java.version"));
         m.put("dataFolder", Paths.get("data").toAbsolutePath().normalize().toString());
@@ -142,7 +141,6 @@ public class SettingsApi {
         if (!"RESET".equals(form.getOrDefault("confirm", "").trim())) {
             throw new InvalidInputException("Type RESET to confirm.");
         }
-        app.simulator.stop();
         app.manager.clearAll();
         return done("All products and sales were deleted.");
     }

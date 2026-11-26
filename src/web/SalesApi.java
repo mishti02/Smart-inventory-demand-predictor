@@ -26,18 +26,9 @@ public class SalesApi {
         Object handle(Map<String, String> params) throws Exception;
     }
 
-    public void register(HttpServer server) {
+        public void register(HttpServer server) {
         get(server, "/api/sales/summary", this::summary);
-        get(server, "/api/simulation", params -> simulationStatus());
         post(server, "/api/sales/record", this::record);
-        post(server, "/api/simulation/start", form -> {
-            app.simulator.start();
-            return simulationStatus();
-        });
-        post(server, "/api/simulation/stop", form -> {
-            app.simulator.stop();
-            return simulationStatus();
-        });
     }
 
     // ---------- plumbing ----------
@@ -175,9 +166,4 @@ public class SalesApi {
         }
     }
 
-    private Map<String, Object> simulationStatus() {
-        Map<String, Object> m = new LinkedHashMap<>();
-        m.put("running", app.simulator.isRunning());
-        return m;
-    }
 }
